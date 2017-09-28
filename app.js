@@ -22,6 +22,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//定义静态文件目录
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use('/', index);
 app.use('/users', users);
 

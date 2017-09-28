@@ -3,9 +3,21 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src='/js/jquery.min.js'></script>
   </head>
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
   </body>
+  <script>
+    $.get('/api/test', {}, function (data) {
+      console.log('----data', data)
+    })
+    $.post('/api/addtest', {
+      title: 'test3',
+      content: 'test333'
+    }, function (data) {
+      console.log('----addtest', data)
+    })
+  </script>
 </html>
