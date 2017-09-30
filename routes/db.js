@@ -13,38 +13,35 @@ function _connectDB(callback) {
   })
 }
 
-// (function init() {
-//   let user = settings.user,
-//     pass = settings.pass,
-//     nickname = settings.nickname || '暂无昵称'
-//   avatar = settings.avatar || '',
-//     intro = settings.intro || '暂无介绍'
-//   let json = { "user": user, "pass": pass, "avatar": avatar, "intro": intro, "nickname": nickname }
-//   _connectDB(function(err, db) {
-//     let usersCollection = db.collection('users')
-//     usersCollection.find({ "user": user }).toArray(function(err, result) {
-//       if (err) {
-//         console.log('查询管理员失败')
-//         db.close
-//         return
-//       }
-//       if (result.length !== 0) {
-//         db.close()
-//         return
-//         // usersCollection.deleteMany({ "user": user })
-//       }
-//       usersCollection.insertOne(json, function(err, res) {
-//         if (err) {
-//           console.log('管理员信息初始化失败')
-//           db.close()
-//           return
-//         }
-//         console.log('管理员信息初始化成功')
-//         db.close()
-//       })
-//     })
-//   })
-// })()
+(function init() {
+  let user = settings.user,
+    pwd = settings.pwd
+  let json = { "user": user, "pwd": pwd }
+  _connectDB(function(err, db) {
+    let usersCollection = db.collection('users')
+    usersCollection.find({ "user": user }).toArray(function(err, result) {
+      if (err) {
+        console.log('查询管理员失败')
+        db.close
+        return
+      }
+      if (result.length !== 0) {
+        db.close()
+        return
+        // usersCollection.deleteMany({ "user": user })
+      }
+      usersCollection.insertOne(json, function(err, res) {
+        if (err) {
+          console.log('管理员信息初始化失败')
+          db.close()
+          return
+        }
+        console.log('管理员信息初始化成功')
+        db.close()
+      })
+    })
+  })
+})()
 
 // 插入数据
 exports.insertOne = function(collectionName, json, callback) {
@@ -77,6 +74,21 @@ exports.find = function(collectionName, queryJson, callback) {
 
     let cursor = db.collection(collectionName).find(json).limit(limit).skip(count).sort(sort)
     cursor.toArray(function(err, results) {
+      if (err) {
+        callback(err, null)
+        db.close()
+        return
+      }
+      callback(err, results)
+      db.close()
+    })
+  })
+}
+
+// 查找单个数据
+exports.findOne = function(collectionName, queryJson, callback) {
+  _connectDB(function(err, db) {
+    db.collection(collectionName).findOne(queryJson, function(err, results) {
       if (err) {
         callback(err, null)
         db.close()
