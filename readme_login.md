@@ -3,7 +3,9 @@
 1、 准备工作：
 
 > 安装token相关工具，用于登录验证：`npm install jsonwebtoken --save`
+
 > 在/routes/db.js中添加查找方法（只查询一个）：
+
 ```javascript
 // 查找单个数据
 exports.findOne = function(collectionName, queryJson, callback) {
@@ -20,7 +22,9 @@ exports.findOne = function(collectionName, queryJson, callback) {
 	})
 }
 ```
+
 > 修改/routes/setting.js
+
 ```javascript
 let md5 = require('./md5.js')
 let user = 'test'
@@ -31,7 +35,9 @@ module.exports = {
     pwd: pwd
 }
 ```
+
 > 新增/routes/md5.js
+
 ```javascript
 let crypto = require('crypto')
 module.exports = function (content) {
@@ -48,6 +54,7 @@ module.exports = function (content) {
 router.post('/api/login', api.login)
 ```
 3、 在/routes/api.js中添加
+
 ```javascript
 const jwt = require('jsonwebtoken')
 // 登录
@@ -91,11 +98,13 @@ exports.login = function(req, res, next) {
   })
 }
 ```
+
 > 关于jsonwebtoken的原理及使用可以参考：http://www.jianshu.com/p/a7882080c541
 
 4、 举例看下token验证方法：
 
 > 新增 /routes/verify-token.js
+
 ```javascript
 const jwt = require('jsonwebtoken')
 module.exports = (req, res, next) => {
@@ -125,7 +134,9 @@ module.exports = (req, res, next) => {
 	}
 }
 ```
+
 > 在/routes/index.js中使用：将addtest方法修改为登录后才可以使用
+
 ```javascript
 const verifyToken = require('./verify-token.js')
 router.route('/api/addtest').all(verifyToken).post(api.addtest) // 先验证是否有正确的token，正确才能进行下一步提交
@@ -141,4 +152,4 @@ $.post('/api/login', {
 ```
 刷新浏览器已经登录成功，此时再进行提交test就会成功了。
 
-5、 此部分代码请看这个commit：
+5、 此部分代码请看这个commit：https://github.com/jiaoyanlin/myNodeProject/tree/20e9faa837ac69580aa450962efd4af02d891a8b

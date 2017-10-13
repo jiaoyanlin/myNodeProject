@@ -63,16 +63,10 @@ exports.find = function(collectionName, queryJson, callback) {
   _connectDB(function(err, db) {
     let json = queryJson.query || {},
       limit = Number(queryJson.limit) || 0,
-      count = Number(queryJson.page) - 1,
+      count = Number(queryJson.page),
       sort = queryJson.sort || {}
-    // 页数为0或者1都显示前limit条数据
-    if (count <= 0) {
-      count = 0
-    } else {
-      count = count * limit
-    }
 
-    let cursor = db.collection(collectionName).find(json).limit(limit).skip(count).sort(sort)
+    let cursor = db.collection(collectionName).find(json).limit(limit).skip(count*limit).sort(sort)
     cursor.toArray(function(err, results) {
       if (err) {
         callback(err, null)
@@ -84,6 +78,31 @@ exports.find = function(collectionName, queryJson, callback) {
     })
   })
 }
+// exports.find = function(collectionName, queryJson, callback) {
+//   _connectDB(function(err, db) {
+//     let json = queryJson.query || {},
+//       limit = Number(queryJson.limit) || 0,
+//       count = Number(queryJson.page) - 1,
+//       sort = queryJson.sort || {}
+//     // 页数为0或者1都显示前limit条数据
+//     if (count <= 0) {
+//       count = 0
+//     } else {
+//       count = count * limit
+//     }
+
+//     let cursor = db.collection(collectionName).find(json).limit(limit).skip(count).sort(sort)
+//     cursor.toArray(function(err, results) {
+//       if (err) {
+//         callback(err, null)
+//         db.close()
+//         return
+//       }
+//       callback(err, results)
+//       db.close()
+//     })
+//   })
+// }
 
 // 查找单个数据
 exports.findOne = function(collectionName, queryJson, callback) {
@@ -117,6 +136,7 @@ exports.deleteMany = function(collectionName, json, callback) {
 
 // 修改数据
 exports.updateMany = function(collectionName, jsonOld, jsonNew, callback) {
+  // console.log('---updateMany', collectionName, jsonOld, jsonNew)
   _connectDB(function(err, db) {
     db.collection(collectionName).updateMany(
       jsonOld, {

@@ -4,18 +4,54 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script src='/js/jquery.min.js'></script>
+    <style>
+      .bor{
+        border: 1px solid #eee;
+        margin-bottom: 10px;
+      }
+    </style>
   </head>
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <div class="bor info">
+    </div>
+    <div class="bor">
+      <input type="text" class="name" placeholder="请输入姓名">
+      <input type="text" class="phone" placeholder="请输入电话">
+      <input type="text" class="motto" placeholder="请输入格言">
+      <button class="update-info">提交</button>
+    </div>
     <div class="post">
       <input type="text" class="title" placeholder="请输入标题">
       <input type="text" class="content" placeholder="请输入标题">
       <button class="ok">提交</button>
     </div>
+    <div class="post">
+      <input type="text" class="user" placeholder="user">
+      <input type="text" class="pwd" placeholder="pwd">
+      <button class="login">login</button>
+    </div>
     <div class="test"></div>
   </body>
   <script>
+    $('.login').click(function() {
+      $.ajax({
+        type: 'post',
+        url: '/api/login',
+        data: {
+          user: $('.user').val(),
+          pwd: $('.pwd').val()
+        },
+        success: function (data) {
+          console.log('----login', data)
+          alert(data.message)
+        }
+      })
+    })
+
+
+
     function getList() {
       $.get('/api/test', {}, function (data) {
         console.log('----data', data)
@@ -58,5 +94,20 @@
     // }, function (data) {
     //   console.log('----login', data)
     // })
+    $('.update-info').click(function() {
+      $.post('/api/updateUserinfo', {
+        name: $('.name').val(),
+        phone: $('.phone').val(),
+        motto: $('.motto').val()
+      }, function (data) {
+        console.log('----update info', data)
+        if (data.code == 200) {
+          alert('提交成功');
+          // getList();
+        } else {
+          alert('提交失败');
+        }
+      })
+    })
   </script>
 </html>

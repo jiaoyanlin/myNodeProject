@@ -21,13 +21,28 @@ router.get(['/users'], function(req, res, next) {
 })
 
 // 新增接口
-router.get('/api/test', api.test)
+router.get('/api/test', api.test);
 
 // 修改addtest接口为在登录下才能提交
 // router.post('/api/addtest', api.addtest)
-router.route('/api/addtest').all(verifyToken).post(api.addtest)
+router.route('/api/addtest').all(verifyToken).post(api.addtest);
 
 // 登录模块
-router.post('/api/login', api.login)
+router.post('/api/login', api.login);
+
+// 获取个人信息
+router.route('/api/getUserinfo').all(verifyToken).get(api.getUserinfo);
+// 更新个人信息
+router.route('/api/updateUserinfo').all(verifyToken).post(api.updateUserinfo);
+
+// 文章的增删改查（管理员的）
+// 增
+router.route('/api/addArticle').all(verifyToken).post(api.addArticle);
+// 删
+router.route('/api/deleteArticle').all(verifyToken).post(api.deleteArticle);
+// 改
+router.route('/api/updateArticle').all(verifyToken).post(api.updateArticle);
+// 查
+router.route('/api/searchArticle').all(verifyToken).get(api.searchArticle);
 
 module.exports = router;

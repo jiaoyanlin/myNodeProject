@@ -1,0 +1,4 @@
+未解决问题：
+1.由于刚开始使用postman测试post接口的时候，在body中选择了form-data来发送请求，导致后台原来的req.body.xxx获取不到post的参数，于是模仿vueblog-master使用formidable来接收post参数，postman成功了，但是ajax请求却失败了，发现控制台中报错Provisional headers are shown，请求被挂起，很久都得不到服务器相应，此时network中还少了response headers。于是将postman中body的参数改为x-www-form-urlencoded，此时就可以使用原来的方式进行获取post参数。
+2.为何模仿vueblog-master会失败？不知道是不是它设置了代理，还是别的原因，尚不清楚。只知道在vueblog-master中使用ajax请求是没问题的，并且在vueblog-master中用ajax请求我自己的项目也是成功的，感觉是vueblog-master对发出去的请求都做了封装，使得发出去的参数可以被正常解析。同时，别的地方发进来的ajax请求它也是可以正确解析的，发进来的参数似乎也被处理了。
+3.db.collection(collectionName).updateMany如果更改的数据本身就不存在不会报错，那怎么知道这个数据本身是否存在呢？？？

@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken')
 module.exports = (req, res, next) => {
   let token = req.cookies.token;
-  let username = req.cookies.username;
+  let user = req.cookies.user;
   let id = req.cookies.id;
   if (token) {
     jwt.verify(token, 'secret', function(err, decoded) {
-      if (!err && decoded.username === username && decoded.id === id) {
+      if (!err && decoded.user === user && decoded.id === id) {
         req.decoded = decoded
         next()
       } else {
