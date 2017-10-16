@@ -32,9 +32,41 @@
       <input type="text" class="pwd" placeholder="pwd">
       <button class="login">login</button>
     </div>
+    <div>图片上传：<input type="file" name="fileToUpload" id="fileToUpload" class="fileupload" /></div>
+    <img style="width: 100px;" src="" />
     <div class="test"></div>
   </body>
   <script>
+    // 图片上传
+    $('.fileupload').change(function(event) {
+        if ($('.fileupload').val().length) {
+            var fileName = $('.fileupload').val();
+            var extension = fileName.substring(fileName.lastIndexOf('.'), fileName.length).toLowerCase();
+            if (extension == ".jpg" || extension == ".png") {
+              var data = new FormData();
+              data.append('fulAvatar', $('#fileToUpload')[0].files[0]);
+              $.ajax({
+                  url: '/api/uploadImg',
+                  type: 'POST',
+                  data: data,
+                  cache: false,
+                  contentType: false, //不可缺参数
+                  processData: false, //不可缺参数
+                  success: function(data) {
+                      console.log('-------upload img:', data);
+                      if (data.code == 200) {
+                        $('img').attr('src', data.result);
+                      }
+                  },
+                  error: function() {
+                      console.log('error');
+                  }
+              });
+            }
+        }
+    });
+
+
     $('.login').click(function() {
       $.ajax({
         type: 'post',

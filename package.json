@@ -16,6 +16,7 @@
     "jsonwebtoken": "^8.0.1",
     "mongodb": "^2.2.31",
     "morgan": "~1.8.1",
-    "serve-favicon": "~2.4.2"
+    "serve-favicon": "~2.4.2",
+    "silly-datetime": "^0.1.2"
   }
 }

@@ -45,4 +45,7 @@ router.route('/api/updateArticle').all(verifyToken).post(api.updateArticle);
 // 查
 router.route('/api/searchArticle').all(verifyToken).get(api.searchArticle);
 
+// 上传图片
+router.route('/api/uploadImg').all(verifyToken).post(api.uploadImg);
+
 module.exports = router;
