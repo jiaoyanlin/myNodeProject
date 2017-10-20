@@ -81,12 +81,17 @@ exports.login = function (req, res, next) {
 		let expires = 60 * 60 * 24 * 30
 		if (dbPassword === pwd) {
 			let token = jwt.sign({ id, user }, 'secret', { expiresIn: expires })
-			res.cookie('token', token, { maxAge: expires })
-			res.cookie('id', id, { maxAge: expires })
-			res.cookie('user', user, { maxAge: expires })
+			// res.cookie('token', token, { maxAge: expires })
+			// res.cookie('id', id, { maxAge: expires })
+			// res.cookie('user', user, { maxAge: expires })
 			return res.json({
 				"code": 200,
-				"message": "登录成功"
+				"message": "登录成功",
+				"result": {
+					token: token,
+					user: user,
+					id: id
+				}
 			})
 		} else {
 			return res.json({
@@ -99,7 +104,8 @@ exports.login = function (req, res, next) {
 
 // 获取个人信息
 exports.getUserinfo = function (req, res, next) {
-	let user = req.cookies.user
+	// let user = req.cookies.user
+	let user = req.query.user
 	// 根据用户名查询数据库中是否含有该用户
 	db.findOne('users', { "user": user }, function (err, result) {
 		if (err) {
@@ -131,7 +137,8 @@ exports.updateUserinfo = function (req, res, next) {
 	let newData = {
 		"name": req.body.name,
 		"phone": req.body.phone,
-		"motto": req.body.motto
+		"motto": req.body.motto,
+		"img": req.body.img
 	};
 	if (!testTel(req.body.phone)) {
 		return res.json({
@@ -140,7 +147,7 @@ exports.updateUserinfo = function (req, res, next) {
 		})
 	}
 
-	db.updateMany('users', { "_id": ObjectId(req.cookies.id) }, newData, function (err, result) {
+	db.updateMany('users', { "_id": ObjectId(req.body.id) }, newData, function (err, result) {
 		if (err) {
 			return res.json({
 				"code": 401,
@@ -161,7 +168,7 @@ exports.addArticle = function (req, res, next) {
 	var now = new Date();
 	var time = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate() + " " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
 	let newData = {
-		'user': req.cookies.user,
+		'user': req.body.user,
 		"title": req.body.title,
 		"content": req.body.content,
 		'updateTime': time

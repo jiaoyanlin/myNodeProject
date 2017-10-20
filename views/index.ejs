@@ -37,6 +37,9 @@
     <div class="test"></div>
   </body>
   <script>
+    $.get('/api/searchArticle', {}, function (data) {
+      console.log('----userinfo:', data)
+    })
     // 图片上传
     $('.fileupload').change(function(event) {
         if ($('.fileupload').val().length) {

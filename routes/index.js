@@ -46,6 +46,6 @@ router.route('/api/updateArticle').all(verifyToken).post(api.updateArticle);
 router.route('/api/searchArticle').all(verifyToken).get(api.searchArticle);
 
 // 上传图片
-router.route('/api/uploadImg').all(verifyToken).post(api.uploadImg);
+router.route('/api/uploadImg').post(api.uploadImg);
 
 module.exports = router;
