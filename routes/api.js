@@ -189,7 +189,7 @@ exports.addArticle = function (req, res, next) {
 }
 // 删(参数：文章id（id）)
 exports.deleteArticle = function (req, res, next) {
-	let id = ObjectId(req.body.id)
+	let id = ObjectId(req.body.articleId)
 	db.deleteMany('myArticles', { "_id": id }, function (err, result) {
 		if (err) {
 			return res.json({
@@ -226,7 +226,7 @@ exports.updateArticle = function (req, res, next) {
 		})
 	}
 
-	db.updateMany('myArticles', { "_id": ObjectId(req.body.id) }, newData, function (err, result) {
+	db.updateMany('myArticles', { "_id": ObjectId(req.body.articleId) }, newData, function (err, result) {
 		if (err) {
 			return res.json({
 				"code": 401,
